@@ -1,5 +1,7 @@
 package org.ulco;
 
+import java.util.Vector;
+
 public class Square extends GraphicsObject {
     public Square(Point center, double length) {
         this.m_origin = center;
@@ -37,6 +39,16 @@ public class Square extends GraphicsObject {
 
     public String toString() {
         return "square[" + m_origin.toString() + "," + m_length + "]";
+    }
+
+    public int size(){
+        return 1;
+    }
+
+    public GraphicsObjects getElement(){
+        GraphicsObjects list = new GraphicsObjects();
+        list.add(this);
+        return list;
     }
 
     private final Point m_origin;

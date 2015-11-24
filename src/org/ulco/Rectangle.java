@@ -1,5 +1,7 @@
 package org.ulco;
 
+import java.util.Vector;
+
 public class Rectangle extends GraphicsObject {
     public Rectangle(Point center, double height, double width) {
         this.m_origin = center;
@@ -40,6 +42,16 @@ public class Rectangle extends GraphicsObject {
 
     public String toString() {
         return "rectangle[" + m_origin.toString() + "," + m_height + "," + m_width + "]";
+    }
+
+    public int size(){
+        return 1;
+    }
+
+    public GraphicsObjects getElement(){
+        GraphicsObjects list = new GraphicsObjects();
+        list.add(this);
+        return list;
     }
 
     private final Point m_origin;

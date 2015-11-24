@@ -11,7 +11,7 @@ public class Group extends GraphicsObject{
     public Group() {
         //m_groupList = new  Vector<Group>();
         m_objectList = new Vector<GraphicsObject>();
-        m_ID = ID.currentID();
+        m_ID = ID.getInstance().getNewId();
     }
 
     public Group(String json) {
@@ -47,7 +47,17 @@ public class Group extends GraphicsObject{
 
     @Override
     boolean isClosed(Point pt, double distance) {
-        return false;
+        //boolean close = true;
+
+        for(int i = 0; i < m_objectList.size(); i++)
+        {
+            if(!(m_objectList.get(i).isClosed(pt, distance)))
+                //close = false;
+                return false;
+        }
+
+        //return close;
+        return true;
     }
 
     public void move(Point delta) {
@@ -163,6 +173,20 @@ public class Group extends GraphicsObject{
             }
         }
         return str + " } }";
+    }
+
+    public Vector<GraphicsObject> getM_objectList()
+    {
+        return m_objectList;
+    }
+
+    public GraphicsObjects getElement(){
+        GraphicsObjects list = new GraphicsObjects();
+
+        for(int i = 0; i < m_objectList.size(); i++)
+            list.add(m_objectList.get(i));
+
+        return list;
     }
 
     public String toString() {

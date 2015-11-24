@@ -5,7 +5,7 @@ import java.util.Vector;
 public class Layer {
     public Layer() {
         m_list = new Vector<GraphicsObject>();
-        m_ID = ID.currentID();
+        m_ID = ID.getInstance().getNewId();
     }
 
     public Layer(String json) {
@@ -33,11 +33,7 @@ public class Layer {
 
             GraphicsObject element = m_list.elementAt(i);
 
-            if (element instanceof Group) {
-               res += ((Group) element).size();
-            }else{
-                res += 1;
-            }
+            res += element.size();
         }
 
         return res;

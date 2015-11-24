@@ -2,6 +2,7 @@ package org.ulco.test;
 
 import junit.framework.TestCase;
 import org.ulco.GraphicsObject;
+import org.ulco.Layer;
 import org.ulco.Point;
 import org.ulco.Rectangle;
 

@@ -76,4 +76,18 @@ public class DocumentTest extends TestCase {
     public void testConstructorCircle() throws Exception {
         assertEquals(new Document(new Point(0,0), 4, 3., 4.).getObjectNumber(), 4);
     }
+
+    public void testIsClosedSelect() throws Exception {
+        Document document = new Document();
+        Layer layer = document.createLayer();
+        Group group = new Group();
+        Circle c = new Circle(new Point(2, 8), 10);
+        Square s = new Square(new Point(-2, -3), 3);
+
+        group.add(c);
+        group.add(s);
+        layer.add(group);
+
+        assertEquals((Select.select(new Point(1, 1), 8, document).size()), 2);
+    }
 }
