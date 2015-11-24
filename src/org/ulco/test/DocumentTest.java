@@ -67,14 +67,18 @@ public class DocumentTest extends TestCase {
     }
 
     public void testConstructorGrid() throws Exception {
-        Document document = new Document(new Point(0,0), 3, 3, 5);
+        Builder build = new Builder();
+        Document d = build.createSquare(new Point(0,0), 3, 3, 5);
 
-        assertEquals(document.getObjectNumber(), 9);
-        assertEquals(document.getLayerNumber(), 1);
+        assertEquals(d.getObjectNumber(), 9);
+        assertEquals(d.getLayerNumber(), 1);
     }
 
     public void testConstructorCircle() throws Exception {
-        assertEquals(new Document(new Point(0,0), 4, 3., 4.).getObjectNumber(), 4);
+        Builder build = new Builder();
+        Document d = build.createCircle(new Point(0,0), 4, 3., 4.);
+
+        assertEquals(d.getObjectNumber(), 4);
     }
 
     public void testIsClosedSelect() throws Exception {
