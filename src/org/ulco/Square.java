@@ -1,21 +1,20 @@
 package org.ulco;
 
-import java.util.Vector;
 
-public class Square extends GraphicsObject {
+public class Square extends Rectangle {
     public Square(Point center, double length) {
-        this.m_origin = center;
-        this.m_length = length;
+        super(center,length,length);
+        m_length = length;
     }
 
     public Square(String json) {
-        String str = json.replaceAll("\\s+","");
-        int centerIndex = str.indexOf("center");
+        super();
+        json(json);
         int lengthIndex = str.indexOf("length");
-        int endIndex = str.lastIndexOf("}");
 
         m_origin = new Point(str.substring(centerIndex + 7, lengthIndex - 1));
         m_length = Double.parseDouble(str.substring(lengthIndex + 7, endIndex));
+
     }
 
     public GraphicsObject copy() {
@@ -23,13 +22,6 @@ public class Square extends GraphicsObject {
     }
 
     public Point getOrigin() { return m_origin; }
-
-    public boolean isClosed(Point pt, double distance) {
-        Point center = new Point(m_origin.getX() + m_length / 2, m_origin.getY() + m_length / 2);
-
-        return Math.sqrt((center.getX() - pt.getX()) * (center.getX() - pt.getX()) +
-                ((center.getY() - pt.getY()) * (center.getY() - pt.getY()))) <= distance;
-    }
 
     void move(Point delta) { m_origin.move(delta); }
 
@@ -51,6 +43,5 @@ public class Square extends GraphicsObject {
         return list;
     }
 
-    private final Point m_origin;
     private final double m_length;
 }

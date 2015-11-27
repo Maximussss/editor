@@ -1,7 +1,5 @@
 package org.ulco;
 
-import java.util.Vector;
-
 public class Circle extends GraphicsObject {
     public Circle(Point center, double radius) {
         this.m_center = center;
@@ -9,10 +7,8 @@ public class Circle extends GraphicsObject {
     }
 
     public Circle(String json) {
-        String str = json.replaceAll("\\s+", "");
-        int centerIndex = str.indexOf("center");
+        json(json);
         int radiusIndex = str.indexOf("radius");
-        int endIndex = str.lastIndexOf("}");
 
         m_center = new Point(str.substring(centerIndex + 7, radiusIndex - 1));
         m_radius = Double.parseDouble(str.substring(radiusIndex + 7, endIndex));
@@ -25,8 +21,7 @@ public class Circle extends GraphicsObject {
     public Point getCenter() { return m_center; }
 
     public boolean isClosed(Point pt, double distance) {
-        return Math.sqrt((m_center.getX() - pt.getX()) * (m_center.getX() - pt.getX()) +
-                ((m_center.getY() - pt.getY()) * (m_center.getY() - pt.getY()))) <= distance;
+        return this.result(pt, distance, m_center);
     }
 
     void move(Point delta) { m_center.move(delta); }

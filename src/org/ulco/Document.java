@@ -1,6 +1,5 @@
 package org.ulco;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 public class Document {
@@ -14,7 +13,9 @@ public class Document {
         int layersIndex = str.indexOf("layers");
         int endIndex = str.lastIndexOf("}");
 
-        parseLayers(str.substring(layersIndex + 8, endIndex));
+        for (int i = 0;i<m_layers.size();i++){
+            Helper.parseObjects(str.substring(layersIndex + 8, endIndex), m_layers.get(i).getM_list());
+        }
     }
 
     public Layer createLayer() {
@@ -37,60 +38,9 @@ public class Document {
         return size;
     }
 
-    private void parseLayers(String layersStr) {
-        while (!layersStr.isEmpty()) {
-            int separatorIndex = searchSeparator(layersStr);
-            String layerStr;
-
-            if (separatorIndex == -1) {
-                layerStr = layersStr;
-            } else {
-                layerStr = layersStr.substring(0, separatorIndex);
-            }
-            m_layers.add(JSON.parseLayer(layerStr));
-            if (separatorIndex == -1) {
-                layersStr = "";
-            } else {
-                layersStr = layersStr.substring(separatorIndex + 1);
-            }
-        }
-    }
-
-    private int searchSeparator(String str) {
-        int index = 0;
-        int level = 0;
-        boolean found = false;
-
-        while (!found && index < str.length()) {
-            if (str.charAt(index) == '{') {
-                ++level;
-                ++index;
-            } else if (str.charAt(index) == '}') {
-                --level;
-                ++index;
-            } else if (str.charAt(index) == ',' && level == 0) {
-                found = true;
-            } else {
-                ++index;
-            }
-        }
-        if (found) {
-            return index;
-        } else {
-            return -1;
-        }
-    }
-
     public GraphicsObjects select(Point pt, double distance) {
         Select select = new Select();
         return select.select(pt,distance,this);
-
-        /*GraphicsObjects list = new GraphicsObjects();
-
-        for (Layer layer : m_layers) {
-            list.addAll(layer.select(pt, distance));
-        }
-        return list;*/
     }
 
     public String toJson() {

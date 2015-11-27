@@ -9,21 +9,22 @@ public class Group extends GraphicsObject{
     private int m_ID;
 
     public Group() {
-        //m_groupList = new  Vector<Group>();
+
         m_objectList = new Vector<GraphicsObject>();
         m_ID = ID.getInstance().getNewId();
     }
 
     public Group(String json) {
-        //m_groupList = new  Vector<Group>();
         m_objectList = new Vector<GraphicsObject>();
         String str = json.replaceAll("\\s+","");
-        int objectsIndex = str.indexOf("objects");
-        int groupsIndex = str.indexOf("groups");
         int endIndex = str.lastIndexOf("}");
+        int groupsIndex = str.indexOf("groups");
+        int objectsIndex = str.indexOf("objects");
 
-        parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2));
-        parseGroups(str.substring(groupsIndex + 8, endIndex - 1));
+
+
+        Helper.parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2), m_objectList);
+        Helper.parseObjects(str.substring(groupsIndex + 8, endIndex - 1),m_objectList);
     }
 
     public void add(Object object) {
@@ -61,74 +62,9 @@ public class Group extends GraphicsObject{
     }
 
     public void move(Point delta) {
-        Group g = new Group();
-
         for (GraphicsObject  o : m_objectList) {
 
             o.move(delta);
-        }
-    }
-
-    private int searchSeparator(String str) {
-        int index = 0;
-        int level = 0;
-        boolean found = false;
-
-        while (!found && index < str.length()) {
-            if (str.charAt(index) == '{') {
-                ++level;
-                ++index;
-            } else if (str.charAt(index) == '}') {
-                --level;
-                ++index;
-            } else if (str.charAt(index) == ',' && level == 0) {
-                found = true;
-            } else {
-                ++index;
-            }
-        }
-        if (found) {
-            return index;
-        } else {
-            return -1;
-        }
-    }
-
-    private void parseGroups(String groupsStr) {
-        while (!groupsStr.isEmpty()) {
-            int separatorIndex = searchSeparator(groupsStr);
-            String groupStr;
-
-            if (separatorIndex == -1) {
-                groupStr = groupsStr;
-            } else {
-                groupStr = groupsStr.substring(0, separatorIndex);
-            }
-            m_objectList.add(JSON.parseGroup(groupStr));
-            if (separatorIndex == -1) {
-                groupsStr = "";
-            } else {
-                groupsStr = groupsStr.substring(separatorIndex + 1);
-            }
-        }
-    }
-
-    private void parseObjects(String objectsStr) {
-        while (!objectsStr.isEmpty()) {
-            int separatorIndex = searchSeparator(objectsStr);
-            String objectStr;
-
-            if (separatorIndex == -1) {
-                objectStr = objectsStr;
-            } else {
-                objectStr = objectsStr.substring(0, separatorIndex);
-            }
-            m_objectList.add(JSON.parse(objectStr));
-            if (separatorIndex == -1) {
-                objectsStr = "";
-            } else {
-                objectsStr = objectsStr.substring(separatorIndex + 1);
-            }
         }
     }
 
